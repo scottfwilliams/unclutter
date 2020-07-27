@@ -1,3 +1,7 @@
+# Application output files
+**/file-db.csv
+**/file.db
+
 # Temporary and binary files
 *~
 *.py[cod]
