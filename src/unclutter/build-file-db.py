@@ -22,21 +22,20 @@ def walk_fs(start_dir):
             for filename in files:
                 sha1 = hashlib.sha1()
                 full_filepath = os.path.join(root, filename)
-                with open(full_filepath, "rb") as in_f:
-                    while True:
-                        data = in_f.read(BUF_SIZE)
-                        if not data:
-                            break
-                        sha1.update(data)
-                filesize = pathlib.Path(full_filepath).stat().st_size
-                digest = sha1.hexdigest()
-                # Insert a row of data
-                # insert_stmt = "INSERT INTO files VALUES ('{0}',{1},'{2}')".format(
-                #    sha1.hexdigest(), filesize, full_filepath)
-                # c.execute(insert_stmt)
-                c.execute("INSERT INTO files VALUES (?,?,?)", (digest, filesize, full_filepath))
+                try:
+                    with open(full_filepath, "rb") as in_f:
+                        while True:
+                            data = in_f.read(BUF_SIZE)
+                            if not data:
+                                break
+                            sha1.update(data)
+                    filesize = pathlib.Path(full_filepath).stat().st_size
+                    digest = sha1.hexdigest()
+                    c.execute("INSERT INTO files VALUES (?,?,?)", (digest, filesize, full_filepath))
+                    out_f.write("{0},{1},{2}\n".format(digest, filesize, full_filepath))
+                except:
+                    c.execute("INSERT INTO files VALUES (?,?,?)", ("FAILED", 0, full_filepath))
 
-                out_f.write("{0},{1},{2}\n".format(digest, filesize, full_filepath))
     # Save (commit) the changes
     conn.commit()
     c.execute("SELECT count(*) FROM files")
@@ -46,7 +45,7 @@ def walk_fs(start_dir):
     c.execute("SELECT count(*) AS qty, sha_hash FROM files GROUP BY sha_hash HAVING count(*) > 1")
     duplicates = c.fetchall()
     print("There are {} sets of duplicated files".format(len(duplicates)))
-    list_duplicate_sets(duplicates, c)
+    # list_duplicate_sets(duplicates, c)
     conn.close()
 
 
@@ -60,6 +59,6 @@ def list_duplicate_sets(duplicates, c):
 
 if __name__ == "__main__":
     start_dir_arg = "."
-    if len(sys.argv) > 1: 
+    if len(sys.argv) > 1:
         start_dir_arg = sys.argv[1]
     walk_fs(start_dir_arg)
