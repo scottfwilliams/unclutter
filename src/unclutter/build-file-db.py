@@ -3,22 +3,33 @@ import sys
 import hashlib
 import pathlib
 import sqlite3
+from pathlib import Path
 
 
 BUF_SIZE = 65536  # read files in 64kb chunks to avoid consuming excess memory on large files
+DB_FILENAME = "file.db"
+
+
+def clean_filepath_str(relative_path_str):
+    return str(clean_filepath(relative_path_str))
+
+
+def clean_filepath(relative_path_str):
+    relative_path = Path(relative_path_str)
+    return relative_path.absolute()  # absolute is a Path object
 
 
 def walk_fs(start_dir):
     # Set up the sqlite DB instance
-    conn = sqlite3.connect("file.db")
+    conn = sqlite3.connect(DB_FILENAME)
     c = conn.cursor()
 
-    # Create table for file output results
-    c.execute('''CREATE TABLE files (sha_hash text, file_size real, filepath text)''')
+    # Get absolute path of start directory
+    start_dir_abslt = clean_filepath_str(start_dir)
 
-    print("Recursively searching contents of {0} for duplicate files".format(start_dir))
+    print("Recursively searching contents of {0} for duplicate files".format(start_dir_abslt))
     with open("file-db.csv", "w") as out_f:
-        for root, dirs, files in os.walk(start_dir):
+        for root, dirs, files in os.walk(start_dir_abslt):
             for filename in files:
                 sha1 = hashlib.sha1()
                 full_filepath = os.path.join(root, filename)

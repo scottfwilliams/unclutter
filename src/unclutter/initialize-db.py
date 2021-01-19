@@ -2,7 +2,10 @@ import sqlite3
 
 
 def main():
-    db_file_name = "file.db"
+    initialize_database("file.db")
+
+
+def initialize_database(db_file_name):
     # Set up the sqlite DB instance
     conn = sqlite3.connect(db_file_name)
     c = conn.cursor()
