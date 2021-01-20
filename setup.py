@@ -1,21 +1,19 @@
 # -*- coding: utf-8 -*-
 """
     Setup file for unclutter.
-    Use setup.cfg to configure your project.
 """
 
-from setuptools import setup, find_packages
+from setuptools import setup
 
 
 setup(
+    name="unclutter",
+    version="1.0.0",
+    packages=["unclutter", "unclutter.command"],
+    install_requires=["Click"],
     entry_points={
-        'console_scripts': [
-            'init_unclutter_db = unclutter.initialize-db:initialize_database',
-            # 'init_unclutter_db = unclutter.initialize-db:initialize_database',
-            # 'init_unclutter_db = unclutter.initialize-db:initialize_database'
-        ],
-    },
-    name="Unclutter",
-    version="0.4",
-    packages=find_packages(),
+      "console_scripts": [
+          "unclutter = unclutter.entry:cli",
+      ]
+    }
 )
