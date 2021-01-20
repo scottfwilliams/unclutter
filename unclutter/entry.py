@@ -18,7 +18,7 @@ def ingest(rootdir, name):
     canonical_rootdir = get_canonical_fp_str(rootdir)
     click.echo("filesystem root directory: {}".format(canonical_rootdir))
     click.echo("filesystem name: {}".format(name))
-    ingest_fs()
+    ingest_fs(name, rootdir)
 
 
 @click.command()
