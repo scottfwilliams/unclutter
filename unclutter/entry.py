@@ -3,7 +3,7 @@
 import click
 
 from unclutter.command.filesystem_analysis import ingest_fs, compare_fs, import_entries_from_file
-from unclutter.command.filesystem_analysis import show_ignored_files
+from unclutter.command.filesystem_analysis import show_excluded_files
 from unclutter.file_utilities import get_canonical_fp_str
 
 
@@ -31,8 +31,8 @@ def load(result_filepath):
 
 
 @click.command()
-def show_ignored():
-    show_ignored_files()
+def show_excluded():
+    show_excluded_files()
 
 
 @click.command()
@@ -43,4 +43,4 @@ def compare():
 cli.add_command(ingest)
 cli.add_command(compare)
 cli.add_command(load)
-cli.add_command(show_ignored)
+cli.add_command(show_excluded)

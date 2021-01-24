@@ -6,16 +6,13 @@ from unclutter.file_utilities import valid_dirpath
 from unclutter.command import _exclude_list as excludes, _platform as platform
 
 BUF_SIZE = 65536  # read files in 64kb chunks to avoid consuming excess memory on large files
-ENTRY_HDR = "filename|file size|SHA1 hash|full filepath"
+ENTRY_HDR = "filesystem name|filename|file size|SHA1 hash|full filepath"
 
 
 def walk_target_fs(start_dir):
-    print("walk_target_fs start_dir: {}".format(start_dir))
-
     # Each record in entries is a tuple containing the filename, SHA1 hash, file size, and the
     # fully qualified filepath
     entries = set()
-    # TODO: Fix the ignore list handling
     for root, dirs, files in os.walk(start_dir, topdown=True):
         print("Processing {} directory...".format(root))
         # print("dirs BEFORE: {}".format(dirs))
@@ -45,7 +42,7 @@ def display_fs_entries(entries, fs_name):
     print("Summary of files from {}".format(fs_name))
     print(ENTRY_HDR)
     for record in entries:
-        print("|".join(record))
+        print("{}|{}".format(fs_name, "|".join(record)))
 
 
 def export_entries_to_file(entries, fs_name):
@@ -68,7 +65,6 @@ def import_entries_from_file(import_filename):
 
 
 def ingest_fs(fs_name, fs_path):
-    print("fs_path: {}".format(fs_path))   # TODO - get rid of this log statement
     print("Processing new filesystem \"{}\"".format(fs_name))
     rootdir_name = os.path.split(fs_path)[1]
     if not valid_dirpath(fs_path):
@@ -88,10 +84,10 @@ def identify_duplicates(*entry_sets):
         print("{} : {}".format(entry_sets[idx], entry_sets[idx+1:]))
 
 
-def show_ignored_files():
+def show_excluded_files():
     print("Platform: {}".format(platform))
-    print("ignore_list: {}".format(excludes))
+    print("Excuded file/directory list: {}".format(excludes))
 
 
 def compare_fs():
-    print("compare filesystems")
+    print("Compare filesystems")
