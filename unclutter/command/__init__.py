@@ -1,10 +1,10 @@
 import sys
 
 
-_exclude_common = [".git"]
+_exclude_common = [".git", ".idea", "__pycache__"]
 _exclude_aix = []
 _exclude_cygwin = []
-_exclude_darwin = [".DS_Store", "._.Trashes"]
+_exclude_darwin = [".DS_Store", ".Trash", "._.Trashes"]
 _exclude_linux = []
 _exclude_win32 = []
 
