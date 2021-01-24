@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
-
 import os
 import hashlib
 import pathlib
-
 from unclutter.file_utilities import valid_dirpath
 from unclutter.command import _exclude_list as excludes, _platform as platform
 
@@ -18,12 +16,15 @@ def walk_target_fs(start_dir):
     # fully qualified filepath
     entries = set()
     # TODO: Fix the ignore list handling
-    for root, dirs, files in os.walk(start_dir):
+    for root, dirs, files in os.walk(start_dir, topdown=True):
         print("Processing {} directory...".format(root))
+        # print("dirs BEFORE: {}".format(dirs))
+        dirs[:] = [d for d in dirs if d not in excludes]
+        # print("dirs AFTER:  {}".format(dirs))
         for filename in files:
-            if os.path.isdir(filename):
-                continue
             if filename in excludes:
+                continue
+            if os.path.isdir(filename):
                 continue
             sha1hash = hashlib.sha1()
             full_filepath = os.path.join(root, filename)

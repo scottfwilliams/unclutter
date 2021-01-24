@@ -1,5 +1,6 @@
 # Application input/output files
 data/
+./*.csv
 
 # Temporary and binary files
 *~

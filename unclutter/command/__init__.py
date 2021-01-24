@@ -2,9 +2,10 @@ import sys
 
 
 _exclude_common = [".git", ".idea", "__pycache__"]
+_exclude_python = ["unclutter.egg-info", "build", "dist", "OLD_PYTHON"]
 _exclude_aix = []
 _exclude_cygwin = []
-_exclude_darwin = [".DS_Store", ".Trash", "._.Trashes"]
+_exclude_darwin = [".Trash", "._.Trashes", ".DS_Store"]
 _exclude_linux = []
 _exclude_win32 = []
 
@@ -19,4 +20,5 @@ _system_excludes_dict = {
 _platform = sys.platform
 _exclude_list = list()
 _exclude_list.extend(_exclude_common)
+_exclude_list.extend(_exclude_python)
 _exclude_list.extend(_system_excludes_dict[_platform])
