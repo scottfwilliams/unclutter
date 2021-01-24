@@ -1,6 +1,5 @@
-# Application output files
-**/file-db.csv
-**/file.db
+# Application input/output files
+data/
 
 # Temporary and binary files
 *~
