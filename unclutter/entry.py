@@ -36,8 +36,9 @@ def show_excluded():
 
 
 @click.command()
-def compare():
-    compare_fs()
+@click.argument("filesystem-results", nargs=-1)
+def compare(filesystem_results):
+    compare_fs(filesystem_results)
 
 
 cli.add_command(ingest)
